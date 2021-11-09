@@ -5,7 +5,7 @@
 # a request and a response:
 
 # Requests contain relevant data regarding your API request call,
-# such as the base URL, 
+# such as the base URL,
 # the endpoint, the method used, the headers, and so on.
 # Responses contain relevant data returned by the server,
 # including the data or content, the status code, and the headers.
@@ -70,16 +70,16 @@ import requests
 
 #test test
 
+#What are the most common reactions for every breed
+
+response = requests.get("https://api.fda.gov/drug/event.json?limit=1")
+print(response.text)
 
 
-response = requests.get("https://api.fda.gov/drug/event.json?search=reactionmeddrapt?")
-print(response.request.path_url)
-
-
-url = 'https://api.fda.gov/drug/event.json?search=reactionmeddrapt:"headache"&limit=5'
-params= {"limit":5, "page":1}
-response = requests.get(url=url, params=params)
-print(response.request.url)
-print(response.request.path_url)
+# url = 'https://api.fda.gov/drug/event.json?search=reactionmeddrapt:"headache"&limit=5'
+# params= {"limit":5, "page":1}
+# response = requests.get(url=url, params=params)
+# print(response.request.url)
+# print(response.request.path_url)
 
 
