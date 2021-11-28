@@ -72,8 +72,25 @@ import requests
 
 #What are the most common reactions for every breed
 
-response = requests.get("https://api.fda.gov/drug/event.json?limit=1")
-print(response.text)
+# response = requests.get("https://api.fda.gov/drug/event.json?limit=1")
+# print(response.text)
+
+x = 0
+
+while True:
+    response = requests.get("https://api.fda.gov/animalandveterinary/event.json?limit=1000" + f'&skip={x}')
+    x = x + 1000
+    header = response.links.get("next")
+    print(header)
+    if header is None:
+        break
+    else:
+        url = response.links["next"]["url"]
+        reaction = response.json()
+        results = (reaction['results'])
+        print(results['reactions'])
+
+
 
 
 # url = 'https://api.fda.gov/drug/event.json?search=reactionmeddrapt:"headache"&limit=5'
