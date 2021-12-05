@@ -1,6 +1,6 @@
 import pymongo
 from pymongo import MongoClient
-import requests
+
 import datetime
 
 
@@ -9,6 +9,8 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['test-database']
 mycol = db["customers"]
 mydict = { "name": "John", "address": "Highway 37" }
+
+import requests
 
 x = mycol.insert_one(mydict)
 list_of_db = client.list_database_names()
