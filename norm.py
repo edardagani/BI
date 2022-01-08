@@ -4,7 +4,6 @@ import psycopg2
 import json
 
 
-
 connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
 connection.autocommit = True
 
@@ -33,7 +32,6 @@ def common_active_ingredients():
         crs.execute(insert_q, (active_ingredient_to_insert,))
 
 
-
 def active_ingrediends_per_incident():
     for record in records:
         try:
@@ -55,7 +53,8 @@ def active_ingrediends_per_incident():
                         active_ingredient.get('dose').get('numerator'), active_ingredient.get('dose').get('denominator'),
                         active_ingredient.get('dose').get('denominator_unit')))
         except Exception as E:
-            print ("Error: {}".format(E))
+            print("Error: {}".format(E))
+
 
 def animals():
     for record in records:
@@ -75,6 +74,7 @@ def animals():
 
         except Exception as E:
             print("Error: {}".format(E))
+
 
 def age():
     for record in records:
@@ -98,15 +98,52 @@ def results():
         try:
             results = record[1]
             original_receive_date = results.get("original_receive_date")
-            number_of_animals_affected = results.get("numbers_of_animals_affected")
             primary_reporter = results.get("primary_reporter")
             number_of_animals_treated = results.get("number_of_animals_treated")
             onset_date = results.get("onset_date")
             report_id = results.get("report_id")
+            crs.execute(f"""
+            INSERT INTO results(unique_aer_id_number, original_receive_date, primary_reporter, onset_date, report_id)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], original_receive_date, primary_reporter, onset_date, report_id))
             # print(report_id)
             # print(onset_date)
-            print(number_of_animals_affected)
-            print(number_of_animals_treated)
+            # print(number_of_animals_affected)
+            # print(number_of_animals_treated)
+            # print(onset_date)
+            # print(primary_reporter)
+            # print(report_id)
+        except Exception as E:
+            print("Error: {}".format(E))
+
+
+def dogs():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw_dog LIMIT 2000")
+
+    records = crs.fetchall()
+    for record in records:
+        try:
+            id  = record[0].get("id")
+            name = record[0].get("name")
+            life_span = record[0].get("life_span")
+            weight = record[0].get("weight")["metric"] + " kg"
+            height = record[0].get("height")["metric"] + " cm"
+            temperament = record[0].get("temperament")
+            # print(id)
+            # print(weight)
+            # print(height)
+            print(temperament)
+            crs.execute("""
+            INSERT INTO dogs(id, name, life_span, weight, height, temperament)
+            VALUES (%s,%s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """, (id, name, life_span, weight, height, temperament))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -114,4 +151,5 @@ def results():
 
 if __name__ == "__main__":
     # common_active_ingredients()
-    age()
+    # results()
+    dogs()
