@@ -9,7 +9,7 @@ connection.autocommit = True
 
 crs = connection.cursor()
 
-crs.execute("SELECT * FROM raw LIMIT 2000")
+crs.execute("SELECT * FROM raw LIMIT 1000000")
 
 records = crs.fetchall()
 
@@ -65,12 +65,11 @@ def animals():
                 print(animal_data['breed']['breed_component'])
                 print(animal_data['species'])
                 crs.execute(f"""
-                INSERT INTO animals(unique_aer_id_number, species, gender, reproductive_status, 
-                female_animal_physiological_status, type_of_information)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO animals(unique_aer_id_number, species, gender, breed, reproductive_status)
+                VALUES (%s, %s, %s, %s, %s)
                 ON CONFLICT DO NOTHING
-                """, (record[0], animal_data.get('species'), animal_data.get('gender'), animal_data.get('reproductive_status'),
-                     animal_data.get('female_animal_physiological_status'), animal_data.get('type_of_information')))
+                """, (record[0], animal_data.get('species'), animal_data.get('gender'), animal_data['breed']['breed_component'],
+                      animal_data.get('reproductive_status')))
 
         except Exception as E:
             print("Error: {}".format(E))
@@ -135,15 +134,109 @@ def dogs():
             weight = record[0].get("weight")["metric"] + " kg"
             height = record[0].get("height")["metric"] + " cm"
             temperament = record[0].get("temperament")
+            breed_group = record[0].get("breed_group")
+            bred_for = record[0].get("bred_for")
             # print(id)
             # print(weight)
             # print(height)
             print(temperament)
             crs.execute("""
-            INSERT INTO dogs(id, name, life_span, weight, height, temperament)
-            VALUES (%s,%s, %s, %s, %s, %s)
+            INSERT INTO dogs(id, name, life_span, weight, height, temperament, breed_group, bred_for)
+            VALUES (%s,%s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT DO NOTHING
-            """, (id, name, life_span, weight, height, temperament))
+            """, (id, name, life_span, weight, height, temperament, breed_group, bred_for))
+        except Exception as E:
+            print("Error: {}".format(E))
+
+
+def reactions():
+    for record in records:
+        try:
+            results = record[1]
+            reaction = results.get("reaction")
+            veddra_version = reaction["veddra_version"]
+            veddra_term_code = reaction["veddra_term_code"]
+            veddra_term_name = reaction["veddra_term_code"]
+            crs.execute(f"""
+            INSERT INTO reactions(unique_aer_id_number, veddra_version, veddra_term_code, veddra_term_name)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], veddra_version, veddra_term_code, veddra_term_name))
+            # print(veddra_version)
+            # print(veddra_term_code)
+            # print(veddra_term_name)
+        except Exception as E:
+            print("Error: {}".format(E))
+
+
+def weight():
+    for record in records:
+        try:
+            animal_data = record[1].get("animal")
+            weight = animal_data["weight"]
+            print(age)
+            min = weight.get("min")
+            print(min)
+            crs.execute(f"""
+            INSERT INTO weight(unique_aer_id_number, min, unit, qualifier)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], weight.get("min"), weight.get("unit"), weight.get("qualifier")))
+        except Exception as E:
+            print("Error: {}".format(E))
+
+
+def drugs():
+    for record in records:
+        try:
+            drugs = record[1].get("drug")
+            used_according_to_label = drugs[0].get("used_according_to_label")
+            print(used_according_to_label)
+            previous_exposure_to_drug = drugs[0].get("previous_exposure_to_drug")
+            brand_name = drugs[0].get("brand_name")
+            dosage_form = drugs[0].get("dosage_form")
+            atc_vet_code = drugs[0].get("atc_vet_code")
+            crs.execute(f"""
+            INSERT INTO drugs(unique_aer_id_number, used_according_to_label, previous_exposure_to_drug, brand_name, dosage_form, atc_vet_code)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], used_according_to_label, previous_exposure_to_drug,
+                  brand_name, dosage_form, atc_vet_code))
+        except Exception as E:
+            print("Error: {}".format(E))
+
+def health_assessment_prior_to_exposure():
+    for record in records:
+        try:
+            results = record[1].get("results")
+            health_assessment_prior_to_exposure = results["health_assessment_prior_to_exposure"]
+            print(health_assessment_prior_to_exposure)
+            condition = health_assessment_prior_to_exposure.get("condition")
+            assessed_by = health_assessment_prior_to_exposure.get("assessed_by")
+            print(assessed_by)
+            crs.execute(f"""
+            INSERT INTO age_table(unique_aer_id_number, condition, assessed_by)
+            VALUES (%s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], condition, assessed_by))
+        except Exception as E:
+            print("Error: {}".format(E))
+
+
+def duration():
+    for record in records:
+        try:
+            results = record[1].get("results")
+            duration = results["duration"]
+            print(duration)
+            value = duration.get("value")
+            unit = duration.get("unit")
+            print(unit)
+            crs.execute(f"""
+            INSERT INTO age_table(unique_aer_id_number, value, unit)
+            VALUES (%s, %s)
+            ON CONFLICT DO NOTHING
+            """, (record[0], value, unit))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -152,4 +245,8 @@ def dogs():
 if __name__ == "__main__":
     # common_active_ingredients()
     # results()
+    # animals()
     dogs()
+    # age()
+    # weight()
+    # drugs()
