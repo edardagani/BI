@@ -14,7 +14,7 @@ crs.execute("SELECT * FROM raw LIMIT 1000000")
 records = crs.fetchall()
 
 
-def common_active_ingredients():
+def active_ingredients():
     # Active Ingredients
     active_ingredients_to_insert = []
     for record in records:
@@ -32,7 +32,7 @@ def common_active_ingredients():
         crs.execute(insert_q, (active_ingredient_to_insert,))
 
 
-def active_ingrediends_per_incident():
+def dose():
     for record in records:
         try:
             for drugs_data in record[1].get('drug'):
@@ -46,7 +46,7 @@ def active_ingrediends_per_incident():
                     ai_to_insert = crs.fetchone()
 
                     crs.execute("""
-                    INSERT INTO incident_ai (unique_aer_id_number,ai_id,numenator,numerator_unit,denominator,denominator_unit)
+                    INSERT INTO dose (unique_aer_id_number,ai_id,numenator,numerator_unit,denominator,denominator_unit)
                     VALUES (%s,%s,%s,%s,%s,%s)
                     ON CONFLICT DO NOTHING 
                     """, (record[0], ai_to_insert[0], active_ingredient.get('dose').get('numerator'),
@@ -205,6 +205,7 @@ def drugs():
         except Exception as E:
             print("Error: {}".format(E))
 
+
 def health_assessment_prior_to_exposure():
     for record in records:
         try:
@@ -243,7 +244,7 @@ def duration():
 
 
 if __name__ == "__main__":
-    # common_active_ingredients()
+    # active_ingredients()
     # results()
     # animals()
     dogs()
