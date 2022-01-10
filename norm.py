@@ -4,17 +4,16 @@ import psycopg2
 import json
 
 
-connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
-connection.autocommit = True
-
-crs = connection.cursor()
-
-crs.execute("SELECT * FROM raw LIMIT 1000000")
-
-records = crs.fetchall()
-
-
 def active_ingredients():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     # Active Ingredients
     active_ingredients_to_insert = []
     for record in records:
@@ -33,6 +32,15 @@ def active_ingredients():
 
 
 def dose():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             for drugs_data in record[1].get('drug'):
@@ -57,6 +65,15 @@ def dose():
 
 
 def animals():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
 
@@ -76,6 +93,15 @@ def animals():
 
 
 def age():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             animal_data = record[1].get("animal")
@@ -93,6 +119,15 @@ def age():
 
 
 def results():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             results = record[1]
@@ -118,6 +153,7 @@ def results():
 
 
 def dogs():
+
     connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
     connection.autocommit = True
 
@@ -150,6 +186,15 @@ def dogs():
 
 
 def reactions():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             results = record[1]
@@ -170,6 +215,15 @@ def reactions():
 
 
 def weight():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             animal_data = record[1].get("animal")
@@ -187,6 +241,15 @@ def weight():
 
 
 def drugs():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
             drugs = record[1].get("drug")
@@ -207,17 +270,24 @@ def drugs():
 
 
 def health_assessment_prior_to_exposure():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
-            results = record[1].get("results")
-            health_assessment_prior_to_exposure = results["health_assessment_prior_to_exposure"]
-            print(health_assessment_prior_to_exposure)
+            health_assessment_prior_to_exposure = record[1].get("health_assessment_prior_to_exposure")
             condition = health_assessment_prior_to_exposure.get("condition")
             assessed_by = health_assessment_prior_to_exposure.get("assessed_by")
             print(assessed_by)
             crs.execute(f"""
-            INSERT INTO age_table(unique_aer_id_number, condition, assessed_by)
-            VALUES (%s, %s)
+            INSERT INTO health_assessment_prior_to_exposure(unique_aer_id_number, condition, assessed_by)
+            VALUES (%s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (record[0], condition, assessed_by))
         except Exception as E:
@@ -225,29 +295,35 @@ def health_assessment_prior_to_exposure():
 
 
 def duration():
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw LIMIT 100")
+
+    records = crs.fetchall()
+
     for record in records:
         try:
-            results = record[1].get("results")
-            duration = results["duration"]
-            print(duration)
+            duration = record[1].get("duration")
             value = duration.get("value")
             unit = duration.get("unit")
             print(unit)
             crs.execute(f"""
-            INSERT INTO age_table(unique_aer_id_number, value, unit)
-            VALUES (%s, %s)
+            INSERT INTO duration(unique_aer_id_number, value, unit)
+            VALUES (%s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (record[0], value, unit))
         except Exception as E:
             print("Error: {}".format(E))
 
 
-
 if __name__ == "__main__":
-    # active_ingredients()
+    health_assessment_prior_to_exposure()
     # results()
     # animals()
-    dogs()
+    # dogs()
     # age()
     # weight()
     # drugs()
