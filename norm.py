@@ -300,7 +300,7 @@ def duration():
 
     crs = connection.cursor()
 
-    crs.execute("SELECT * FROM raw LIMIT 100")
+    crs.execute("SELECT * FROM raw LIMIT 1000000")
 
     records = crs.fetchall()
 
@@ -320,10 +320,12 @@ def duration():
 
 
 if __name__ == "__main__":
-    health_assessment_prior_to_exposure()
+    # health_assessment_prior_to_exposure()
+    # duration()
     # results()
     # animals()
     # dogs()
     # age()
     # weight()
-    # drugs()
+    drugs()
+    # active_ingredients()
