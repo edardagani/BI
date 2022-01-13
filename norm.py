@@ -54,7 +54,7 @@ def dose():
                     ai_to_insert = crs.fetchone()
 
                     crs.execute("""
-                    INSERT INTO dose (unique_aer_id_number,ai_id,numenator,numerator_unit,denominator,denominator_unit)
+                    INSERT INTO incident_ai (unique_aer_id_number,ai_id,numenator,numerator_unit,denominator,denominator_unit)
                     VALUES (%s,%s,%s,%s,%s,%s)
                     ON CONFLICT DO NOTHING 
                     """, (record[0], ai_to_insert[0], active_ingredient.get('dose').get('numerator'),
@@ -199,12 +199,12 @@ def reactions():
         try:
             results = record[1]
             reaction = results.get("reaction")
-            veddra_version = reaction["veddra_version"]
-            veddra_term_code = reaction["veddra_term_code"]
-            veddra_term_name = reaction["veddra_term_code"]
+            veddra_version = reaction[0].get("veddra_version")
+            veddra_term_code = reaction[0].get("veddra_term_code")
+            veddra_term_name = reaction[0].get("veddra_term_name")
             crs.execute(f"""
             INSERT INTO reactions(unique_aer_id_number, veddra_version, veddra_term_code, veddra_term_name)
-            VALUES (%s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (record[0], veddra_version, veddra_term_code, veddra_term_name))
             # print(veddra_version)
@@ -327,5 +327,7 @@ if __name__ == "__main__":
     # dogs()
     # age()
     # weight()
-    drugs()
-    # active_ingredients()
+    # drugs()
+    active_ingredients()
+    # reactions()
+    # dose()
