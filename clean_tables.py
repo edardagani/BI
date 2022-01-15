@@ -44,11 +44,12 @@ ALTER TABLE weight DROP COLUMN qualifier;
 
 #age_table
 age_table_commands = ("""
-DELETE FROM age_table WHERE 
+DELETE FROM age_table WHERE unit !="Year";
+DELETE FROM age_table WHERE unit IS NULL;
 ALTER TABLE age_table DROP COLUMN unit;
 """)
 
-commands_list = [weight_commands, reaction_commands, drugs_commands, animals_commands, dogs_commands]
+commands_list = [weight_commands, reaction_commands, drugs_commands, animals_commands, dogs_commands, age_table_commands]
 
 
 def cleaning():
