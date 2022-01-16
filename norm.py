@@ -159,16 +159,16 @@ def dogs():
 
     crs = connection.cursor()
 
-    crs.execute("SELECT * FROM raw_dog LIMIT 2000")
+    crs.execute("SELECT * FROM raw_dog LIMIT 1000")
 
     records = crs.fetchall()
     for record in records:
         try:
             id  = record[0].get("id")
             name = record[0].get("name")
-            life_span = record[0].get("life_span")
-            weight = record[0].get("weight")["metric"] + " kg"
-            height = record[0].get("height")["metric"] + " cm"
+            life_span = record[0].get("life_span")[:2]
+            weight = record[0].get("weight")["metric"][:2]
+            height = record[0].get("height")["metric"][:2]
             temperament = record[0].get("temperament")
             breed_group = record[0].get("breed_group")
             bred_for = record[0].get("bred_for")
@@ -309,6 +309,10 @@ def duration():
             duration = record[1].get("duration")
             value = duration.get("value")
             unit = duration.get("unit")
+            if unit == "Week":
+                value = str(int(value) * 7)
+            elif unit == "Month":
+                value = str(int(value) * 30)
             print(unit)
             crs.execute(f"""
             INSERT INTO duration(unique_aer_id_number, value, unit)
@@ -321,13 +325,14 @@ def duration():
 
 if __name__ == "__main__":
     # health_assessment_prior_to_exposure()
-    # duration()
+    duration()
     # results()
     # animals()
     # dogs()
     # age()
     # weight()
     # drugs()
-    active_ingredients()
+    # active_ingredients()
     # reactions()
     # dose()
+    # dogs()
