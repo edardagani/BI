@@ -3,9 +3,175 @@ import requests
 import psycopg2
 import json
 
+connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
+
+active_ingredients_table = ("""
+CREATE TABLE active_ingredients
+(
+  id SERIAL
+    CONSTRAINT active_ingredients_pk
+      PRIMARY KEY, active_ingredient TEXT
+);
+""")
+
+age_table = ("""
+CREATE TABLE age_table
+(
+ unique_aer_id_number TEXT NOT NULL,
+ min TEXT,
+ unit TEXT,
+ qualifier TEXT,
+PRIMARY KEY (unique_aer_id_number)
+);
+""")
+
+animals_table = ("""
+CREATE TABLE animals
+(
+ unique_aer_id_number TEXT NOT NULL,
+ species TEXT,
+ gender TEXT,
+ breed TEXT,
+ reproductive_status TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+""")
+
+dogs_table = ("""
+CREATE TABLE dogs
+(
+ id TEXT NOT NULL,
+ name TEXT,
+ life_span TEXT,
+ weight TEXT,
+ height TEXT,
+ temperament TEXT,
+ breed_group TEXT,
+ bred_for TEXT,
+ PRIMARY KEY (id)
+);
+""")
+
+drugs_table = ("""
+CREATE TABLE drugs
+(
+ unique_aer_id_number TEXT NOT NULL,
+ used_according_to_label TEXT,
+ previous_exposure_to_drug TEXT,
+ brand_name TEXT,
+ dosage_form TEXT,
+ atc_vet_code TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+""")
+
+duration_table = ("""
+CREATE TABLE health_assessment_prior_to_exposure
+(
+ unique_aer_id_number TEXT NOT NULL,
+ value TEXT,
+ unit TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+
+""")
+
+health_assessment_prior_to_exposure_table = ("""
+CREATE TABLE health_assessment_prior_to_exposure
+(
+ unique_aer_id_number TEXT NOT NULL,
+ condition TEXT,
+ assesed_by TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+""")
+
+incident_ai_table = ("""
+CREATE TABLE incident_ai
+(
+  unique_aer_id_number TEXT NOT NULL,
+  ai_id INTEGER NOT NULL
+    REFERENCES active_ingredients,
+  numenator TEXT,
+  numerator_unit TEXT,
+  denominator TEXT,
+  denominator_unit TEXT,
+  PRIMARY KEY (unique_aer_id_number, ai_id)
+);
+""")
+
+raw_table = ("""
+CREATE TABLE raw
+(
+ unique_aer_id_number TEXT NOT NULL,
+ raw_data jsonb,
+ PRIMARY KEY (unique_aer_id_number)
+);
+
+""")
+
+raw_dog_table = ("""
+CREATE TABLE raw_dog
+(
+  raw_data jsonb
+);
+
+""")
+
+reactions_table = ("""
+CREATE TABLE reactions
+(
+ unique_aer_id_number TEXT NOT NULL,
+ veddra_version TEXT,
+ veddra_term_code TEXT,
+ veddra_term_name TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+
+""")
+
+results_table = ("""
+CREATE TABLE reactions
+(
+ unique_aer_id_number TEXT NOT NULL,
+ original_receive_date TEXT,
+ primary_reporter TEXT,
+ onset_date TEXT,
+ report_id TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+);
+
+""")
+
+weight_table = ("""
+CREATE TABLE weight
+(
+ unique_aer_id_number TEXT NOT NULL,
+ min TEXT,
+ unit TEXT,
+ qualifier TEXT,
+ PRIMARY KEY (unique_aer_id_number)
+
+""")
+
+def table_creation():
+    try:
+        connection = psycopg2.connect(connection_name)
+        connection.autocommit = True
+        crs = connection.cursor()
+
+        for command in commands_list:
+            crs.execute(command)
+            # close communication with the PostgreSQL database server
+            crs.close()
+            # commit the changes
+            connection.commit()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+
 
 def active_ingredients():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -32,7 +198,7 @@ def active_ingredients():
 
 
 def dose():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -65,7 +231,7 @@ def dose():
 
 
 def animals():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -93,7 +259,7 @@ def animals():
 
 
 def age():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -119,7 +285,7 @@ def age():
 
 
 def results():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -133,7 +299,6 @@ def results():
             results = record[1]
             original_receive_date = results.get("original_receive_date")
             primary_reporter = results.get("primary_reporter")
-            number_of_animals_treated = results.get("number_of_animals_treated")
             onset_date = results.get("onset_date")
             report_id = results.get("report_id")
             crs.execute(f"""
@@ -154,7 +319,7 @@ def results():
 
 def dogs():
 
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -186,7 +351,7 @@ def dogs():
 
 
 def reactions():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -215,7 +380,7 @@ def reactions():
 
 
 def weight():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -241,7 +406,7 @@ def weight():
 
 
 def drugs():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -270,7 +435,7 @@ def drugs():
 
 
 def health_assessment_prior_to_exposure():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
@@ -295,7 +460,7 @@ def health_assessment_prior_to_exposure():
 
 
 def duration():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
     crs = connection.cursor()
