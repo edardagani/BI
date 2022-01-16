@@ -45,30 +45,6 @@ def data_mart():
         print(error)
 
 
-def age():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
-    connection.autocommit = True
-
-    crs = connection.cursor()
-
-    crs.execute("SELECT * FROM raw LIMIT 1000000")
-
-    records = crs.fetchall()
-
-    for record in records:
-        try:
-            animal_data = record[1].get("animal")
-            age = animal_data["age"]
-            print(age)
-            min = age.get("min")
-            print(min)
-            crs.execute(f"""
-            INSERT INTO age_table(unique_aer_id_number, min, unit, qualifier)
-            VALUES (%s, %s, %s, %s)
-            ON CONFLICT DO NOTHING
-            """, (record[0], age.get("min"), age.get("unit"), age.get("qualifier")))
-        except Exception as E:
-            print("Error: {}".format(E))
 
 
 if __name__ == '__main__':
