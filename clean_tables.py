@@ -29,7 +29,8 @@ drugs_commands = ("""
 UPDATE drugs SET used_according_to_label = 'Unkown' WHERE used_according_to_label IS NULL;
 UPDATE drugs SET previous_exposure_to_drug = 'Unkown' WHERE previous_exposure_to_drug IS NULL;
 UPDATE drugs SET dosage_form = 'Unkown' WHERE dosage_form IS NULL;
-UPDATE drugs SET brand_name = 'Unkown' WHERE brand_name IS NULL;
+ALTER TABLE drugs DROP COLUMN brand_name;
+ALTER TABLE drugs DROP COLUMN atc_vet_code;
 """)
 
 
@@ -70,7 +71,24 @@ ALTER TABLE age_table DROP COLUMN unit;
 ALTER TABLE age_table DROP COLUMN qualifier;
 """)
 
-commands_list = [duration_commands]
+health_assessment_prior_to_exposure_commands = ("""
+UPDATE health_assessment_prior_to_exposure SET conditions = 'Unknown' WHERE conditions='';
+DELETE FROM health_assessment_prior_to_exposure WHERE conditions IS NULL;
+""")
+
+
+results_commands = ("""
+UPDATE results SET onset_date = 'Unkown' WHERE onset_date IS NULL;
+UPDATE results SET onset_date = 'Unkown' WHERE onset_date = '';
+UPDATE results SET primary_reporter = 'Unkown' WHERE primary_reporter IS NULL;
+UPDATE results SET primary_reporter = 'Unkown' WHERE primary_reporter = '';
+UPDATE results SET original_receive_date = 'Unkown' WHERE original_receive_date IS NULL;
+UPDATE results SET original_receive_date = 'Unkown' WHERE original_receive_date = '';
+""")
+
+
+
+commands_list = [reaction_commands]
 
 
 def cleaning():
@@ -88,32 +106,7 @@ def cleaning():
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
-# def dogs_clean():
-#     connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
-#     connection.autocommit = True
-#
-#     crs = connection.cursor()
-#
-#     crs.execute("SELECT * FROM dogs LIMIT 500")
-#
-#     records = crs.fetchall()
-#
-#     for record in records:
-#         try:
-#             dog_life_span = record[2][:2]
-#             print(dog_life_span)
-#             weight = record[3][:2]
-#             print(weight)
-#             height = record[4][:2]
-#             print(height)
-#             crs.execute(f"""
-#             INSERT INTO age_table(unique_aer_id_number, min, unit, qualifier)
-#             VALUES (%s, %s, %s, %s)
-#             ON CONFLICT DO NOTHING
-#             """, (record[0], age.get("min"), age.get("unit"), age.get("qualifier")))
-#         except Exception as E:
-#             print("Error: {}".format(E))
-#
+
 
 
 if __name__ == '__main__':
