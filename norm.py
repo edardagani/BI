@@ -100,24 +100,6 @@ CREATE TABLE incident_ai
 );
 """)
 
-raw_table = ("""
-CREATE TABLE raw
-(
- unique_aer_id_number TEXT NOT NULL,
- raw_data jsonb,
- PRIMARY KEY (unique_aer_id_number)
-);
-
-""")
-
-raw_dog_table = ("""
-CREATE TABLE raw_dog
-(
-  raw_data jsonb
-);
-
-""")
-
 reactions_table = ("""
 CREATE TABLE reactions
 (
@@ -154,13 +136,18 @@ CREATE TABLE weight
 
 """)
 
+table_list = [active_ingredients_table, age_table, animals_table, dogs_table,drugs_table, duration_table,
+              health_assessment_prior_to_exposure_table,incident_ai_table, reactions_table,
+              results_table, weight_table]
+
+
 def table_creation():
     try:
         connection = psycopg2.connect(connection_name)
         connection.autocommit = True
         crs = connection.cursor()
 
-        for command in commands_list:
+        for command in table_list:
             crs.execute(command)
             # close communication with the PostgreSQL database server
             crs.close()
