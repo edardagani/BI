@@ -51,7 +51,11 @@ ALTER TABLE weight DROP COLUMN unit;
 #duration
 duration_commands = ("""
 DELETE FROM duration WHERE unit IS NULL;
-DELETE FROM duration WHERE unit != 'Day' or unit != 'Week' or unit != 'Month';
+DELETE FROM duration WHERE unit = 'Year';
+DELETE FROM duration WHERE unit = 'Hour';
+DELETE FROM duration WHERE unit = 'Minute';
+DELETE FROM duration WHERE unit = 'Second';
+DELETE FROM duration WHERE unit = '';
 ALTER TABLE duration DROP COLUMN unit;
 """)
 
@@ -66,7 +70,7 @@ ALTER TABLE age_table DROP COLUMN unit;
 ALTER TABLE age_table DROP COLUMN qualifier;
 """)
 
-commands_list = [dogs_commands]
+commands_list = [duration_commands]
 
 
 def cleaning():
