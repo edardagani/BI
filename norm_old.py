@@ -131,6 +131,150 @@ def age():
     return age_list
         # finally:
         #     return column_list
+
+
+def life_span():
+    life_span_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM dogs LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            life_span = record[2]
+            # print(reaction)
+
+            life_span_list.append(life_span)
+        except Exception as e:
+                print(e)
+    return life_span_list
+
+
+def weight():
+    weight_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM dogs LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            weight = record[3]
+            # print(reaction)
+
+            weight_list.append(weight)
+        except Exception as e:
+                print(e)
+    return weight_list
+
+def names_of_dogs():
+    name_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM dogs LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            name = record[1]
+            # print(reaction)
+
+            name_list.append(name)
+        except Exception as e:
+                print(e)
+    return name_list
+
+
+def veddra_term_name():
+    veddra_term_name_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM temp_table LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            veddra_term_name = record[1]
+            # print(reaction)
+
+            veddra_term_name_list.append(veddra_term_name)
+        except Exception as e:
+                print(e)
+    return veddra_term_name_list
+
+
+def previous_exposure_to_drug():
+    previous_exposure_to_drug_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM temp_table LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            previous_exposure_to_drug = record[2]
+            # print(reaction)
+
+            previous_exposure_to_drug_list.append(previous_exposure_to_drug)
+        except Exception as e:
+            print(e)
+    return previous_exposure_to_drug_list
+
+
+def unique_id_number_test():
+
+    unique_id_number_test_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM temp_table LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            previous_exposure_to_drug = record[0]
+            # print(reaction)
+
+            unique_id_number_test_list.append(previous_exposure_to_drug)
+        except Exception as e:
+            print(e)
+    return unique_id_number_test_list
+
+
+def master_function(query, index):
+    list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute(query)
+    records = crs.fetchall()
+    for record in records:
+        try:
+            value = record[index]
+            # print(reaction)
+
+            list.append(value)
+        except Exception as e:
+            print(e)
+    return list
+
+
+master_function("SELECT * FROM temp_table LIMIT 10000", 3)
+
 # duration()
 
 # test =common_active_ingredients()
