@@ -172,6 +172,7 @@ def weight():
                 print(e)
     return weight_list
 
+
 def names_of_dogs():
     name_list = []
     connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
@@ -253,6 +254,28 @@ def unique_id_number_test():
     return unique_id_number_test_list
 
 
+def breed_mean_duration():
+
+    breed_mean_duration_list = []
+    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM temp_table3 LIMIT 10000")
+    records = crs.fetchall()
+    for record in records:
+        try:
+            breed = record[4]
+            value = record[3]
+            # print(reaction)
+
+            breed_mean_duration_list.append(previous_exposure_to_drug)
+        except Exception as e:
+            print(e)
+    return breed_mean_duration_list
+
+
 def master_function(query, index):
     list = []
     connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
@@ -273,7 +296,7 @@ def master_function(query, index):
     return list
 
 
-master_function("SELECT * FROM temp_table LIMIT 10000", 3)
+# master_function("SELECT * FROM temp_table LIMIT 10000", 3)
 
 # duration()
 
