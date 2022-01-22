@@ -14,11 +14,12 @@ CREATE TABLE active_ingredients
 );
 """)
 
-age = ("""
+age_table = ("""
 create table age
 (
 unique_aer_id_number varchar(100),
-min numeric(10,2)
+min numeric(10,2),
+unit varchar(100)
 );
 """)
 
@@ -29,7 +30,7 @@ unique_aer_id_number varchar(100),
 species varchar(100),
 gender varchar(100),
 breed varchar(2000),
-reproductive_system varchar(100)
+reproductive_status varchar(100)
 );
 """)
 
@@ -41,6 +42,7 @@ name varchar(100),
 life_span int,
 weight varchar(100),
 height varchar(100),
+temperament varchar(500),
 breed_group varchar(100),
 bred_for varchar(500)
 );
@@ -61,7 +63,8 @@ duration_table = ("""
 create table duration
 (
 unique_aer_id_number varchar(100),
-value int
+value int,
+unit varchar(100)
 );
 
 """)
@@ -81,7 +84,7 @@ create table incident_ai
 unique_aer_id_number varchar(100),
 ai_id int,
 numerator numeric(10,2),
-numerator_unit numeric(10,2),
+numerator_unit varchar(100),
 denominator numeric(10,2),
 denominator_unit varchar(100)
 );
@@ -115,6 +118,7 @@ create table weight
 (
 unique_aer_id_number varchar(100),
 min numeric(10,2)
+unit varchar(100)
 );
 
 """)
@@ -132,7 +136,7 @@ char6 varchar(100)
 );
 """)
 
-table_list = [active_ingredients_table, age, animals_table, dog_table,drugs_table, duration_table,
+table_list = [active_ingredients_table, age_table, animals_table, dog_table,drugs_table, duration_table,
               health_assessment_prior_to_exposure_table,incident_ai_table, reactions_table,
               results_table, weight_table, temperament_table]
 
@@ -187,7 +191,7 @@ def incident_ai():
 
     crs = connection.cursor()
 
-    crs.execute("SELECT * FROM raw LIMIT 1000000")
+    crs.execute("SELECT * FROM raw LIMIT 100000")
 
     records = crs.fetchall()
 
@@ -208,7 +212,7 @@ def incident_ai():
                     VALUES (%s,%s,%s,%s,%s,%s)
                     ON CONFLICT DO NOTHING 
                     """, (record[0], ai_to_insert[0], active_ingredient.get('dose').get('numerator'),
-                        active_ingredient.get('dose').get('numerator'), active_ingredient.get('dose').get('denominator'),
+                        active_ingredient.get('dose').get('numerator_unit'), active_ingredient.get('dose').get('denominator'),
                         active_ingredient.get('dose').get('denominator_unit')))
         except Exception as E:
             print("Error: {}".format(E))
@@ -260,10 +264,10 @@ def age():
             min = age.get("min")
             print(min)
             crs.execute(f"""
-            INSERT INTO age(unique_aer_id_number, min, unit, qualifier)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO age(unique_aer_id_number, min, unit)
+            VALUES (%s, %s, %s)
             ON CONFLICT DO NOTHING
-            """, (record[0], age.get("min"), age.get("unit"), age.get("qualifier")))
+            """, (record[0], age.get("min"), age.get("unit")))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -381,10 +385,10 @@ def weight():
             min = weight.get("min")
             print(min)
             crs.execute(f"""
-            INSERT INTO weight(unique_aer_id_number, min, unit, qualifier)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO weight(unique_aer_id_number, min, unit)
+            VALUES (%s, %s, %s)
             ON CONFLICT DO NOTHING
-            """, (record[0], weight.get("min"), weight.get("unit"), weight.get("qualifier")))
+            """, (record[0], weight.get("min"), weight.get("unit")))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -405,15 +409,15 @@ def drugs():
             used_according_to_label = drugs[0].get("used_according_to_label")
             print(used_according_to_label)
             previous_exposure_to_drug = drugs[0].get("previous_exposure_to_drug")
-            brand_name = drugs[0].get("brand_name")
+            # brand_name = drugs[0].get("brand_name")
             dosage_form = drugs[0].get("dosage_form")
             atc_vet_code = drugs[0].get("atc_vet_code")
             crs.execute(f"""
-            INSERT INTO drugs(unique_aer_id_number, used_according_to_label, previous_exposure_to_drug, brand_name, dosage_form, atc_vet_code)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO drugs(unique_aer_id_number, used_according_to_label, previous_exposure_to_drug, dosage_form, atc_vet_code)
+            VALUES (%s, %s, %s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (record[0], used_according_to_label, previous_exposure_to_drug,
-                  brand_name, dosage_form, atc_vet_code))
+                   dosage_form, atc_vet_code))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -493,16 +497,17 @@ def temperament():
 
 
 if __name__ == "__main__":
-    table_creation()
-    health_assessment_prior_to_exposure()
-    duration()
-    results()
-    animals()
-    dog()
-    age()
-    weight()
-    drugs()
-    active_ingredients()
-    reactions()
-    temperament()
+    # table_creation()
+    # health_assessment_prior_to_exposure()
+    # duration()
+    # results()
+    # animals()
+    # dog()
+    # age()
+    # weight()
+    # drugs()
+    # active_ingredients()
+    # reactions()
+    # temperament()
+    incident_ai()
 
