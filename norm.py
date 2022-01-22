@@ -14,131 +14,127 @@ CREATE TABLE active_ingredients
 );
 """)
 
-age_table = ("""
-CREATE TABLE age_table
+age = ("""
+create table age
 (
- unique_aer_id_number TEXT NOT NULL,
- min TEXT,
- unit TEXT,
- qualifier TEXT,
-PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+min numeric(10,2)
 );
 """)
 
 animals_table = ("""
-CREATE TABLE animals
+create table animals
 (
- unique_aer_id_number TEXT NOT NULL,
- species TEXT,
- gender TEXT,
- breed TEXT,
- reproductive_status TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+species varchar(100),
+gender varchar(100),
+breed varchar(2000),
+reproductive_system varchar(100)
 );
 """)
 
-dogs_table = ("""
-CREATE TABLE dogs
+dog_table = ("""
+create table dog
 (
- id TEXT NOT NULL,
- name TEXT,
- life_span TEXT,
- weight TEXT,
- height TEXT,
- temperament TEXT,
- breed_group TEXT,
- bred_for TEXT,
- PRIMARY KEY (id)
+id int,
+name varchar(100),
+life_span int,
+weight varchar(100),
+height varchar(100),
+breed_group varchar(100),
+bred_for varchar(500)
 );
 """)
 
 drugs_table = ("""
-CREATE TABLE drugs
+create table drugs
 (
- unique_aer_id_number TEXT NOT NULL,
- used_according_to_label TEXT,
- previous_exposure_to_drug TEXT,
- brand_name TEXT,
- dosage_form TEXT,
- atc_vet_code TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+used_according_to_label varchar(100),
+previous_exposure_to_drug varchar(100),
+dosage_form varchar(100),
+atc_vet_code varchar(100)
 );
 """)
 
 duration_table = ("""
-CREATE TABLE health_assessment_prior_to_exposure
+create table duration
 (
- unique_aer_id_number TEXT NOT NULL,
- value TEXT,
- unit TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+value int
 );
 
 """)
 
 health_assessment_prior_to_exposure_table = ("""
-CREATE TABLE health_assessment_prior_to_exposure
+create table health_assessment_prior_to_exposure
 (
- unique_aer_id_number TEXT NOT NULL,
- condition TEXT,
- assesed_by TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+condition_of_animal varchar(100)
 );
+
 """)
 
 incident_ai_table = ("""
-CREATE TABLE incident_ai
+create table incident_ai
 (
-  unique_aer_id_number TEXT NOT NULL,
-  ai_id INTEGER NOT NULL
-    REFERENCES active_ingredients,
-  numenator TEXT,
-  numerator_unit TEXT,
-  denominator TEXT,
-  denominator_unit TEXT,
-  PRIMARY KEY (unique_aer_id_number, ai_id)
+unique_aer_id_number varchar(100),
+ai_id int,
+numerator numeric(10,2),
+numerator_unit numeric(10,2),
+denominator numeric(10,2),
+denominator_unit varchar(100)
 );
+
 """)
 
 reactions_table = ("""
-CREATE TABLE reactions
+create table reactions
 (
- unique_aer_id_number TEXT NOT NULL,
- veddra_version TEXT,
- veddra_term_code TEXT,
- veddra_term_name TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+veddra_version varchar(100),
+veddra_term_code int,
+veddra_term_name varchar(100)
 );
-
 """)
 
 results_table = ("""
-CREATE TABLE reactions
+create table results
 (
- unique_aer_id_number TEXT NOT NULL,
- original_receive_date TEXT,
- primary_reporter TEXT,
- onset_date TEXT,
- report_id TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+original_receive_date varchar(100),
+primary_reporter varchar(100),
+onset_date varchar(100),
+report_id varchar(100)
 );
 
 """)
 
 weight_table = ("""
-CREATE TABLE weight
+create table weight
 (
- unique_aer_id_number TEXT NOT NULL,
- min TEXT,
- unit TEXT,
- qualifier TEXT,
- PRIMARY KEY (unique_aer_id_number)
+unique_aer_id_number varchar(100),
+min numeric(10,2)
+);
 
 """)
 
-table_list = [active_ingredients_table, age_table, animals_table, dogs_table,drugs_table, duration_table,
+temperament_table = ("""
+create table temperament
+(
+id int,
+char1 varchar(100),
+char2 varchar(100),
+char3 varchar(100),
+char4 varchar(100),
+char5 varchar(100),
+char6 varchar(100)
+);
+""")
+
+table_list = [active_ingredients_table, age, animals_table, dog_table,drugs_table, duration_table,
               health_assessment_prior_to_exposure_table,incident_ai_table, reactions_table,
-              results_table, weight_table]
+              results_table, weight_table, temperament_table]
 
 
 def table_creation():
@@ -150,9 +146,10 @@ def table_creation():
         for command in table_list:
             crs.execute(command)
             # close communication with the PostgreSQL database server
-            crs.close()
+            # crs.close()
             # commit the changes
             connection.commit()
+        crs.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
@@ -171,8 +168,8 @@ def active_ingredients():
     active_ingredients_to_insert = []
     for record in records:
         for drugs_data in record[1].get('drug'):
-            for active_ingredient in drugs_data.get('active_ingredients'):
-                active_ingredients_to_insert.append(active_ingredient.get('name', 'Unknown'))
+            for active_ingredients in drugs_data.get('active_ingredients'):
+                active_ingredients_to_insert.append(active_ingredients.get('name', 'Unknown'))
 
     insert_q = """
         INSERT INTO active_ingredients (active_ingredient)
@@ -184,7 +181,7 @@ def active_ingredients():
         crs.execute(insert_q, (active_ingredient_to_insert,))
 
 
-def dose():
+def incident_ai():
     connection = psycopg2.connect(connection_name)
     connection.autocommit = True
 
@@ -207,7 +204,7 @@ def dose():
                     ai_to_insert = crs.fetchone()
 
                     crs.execute("""
-                    INSERT INTO incident_ai (unique_aer_id_number,ai_id,numenator,numerator_unit,denominator,denominator_unit)
+                    INSERT INTO incident_ai (unique_aer_id_number,ai_id,numerator,numerator_unit,denominator,denominator_unit)
                     VALUES (%s,%s,%s,%s,%s,%s)
                     ON CONFLICT DO NOTHING 
                     """, (record[0], ai_to_insert[0], active_ingredient.get('dose').get('numerator'),
@@ -263,7 +260,7 @@ def age():
             min = age.get("min")
             print(min)
             crs.execute(f"""
-            INSERT INTO age_table(unique_aer_id_number, min, unit, qualifier)
+            INSERT INTO age(unique_aer_id_number, min, unit, qualifier)
             VALUES (%s, %s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (record[0], age.get("min"), age.get("unit"), age.get("qualifier")))
@@ -304,7 +301,7 @@ def results():
             print("Error: {}".format(E))
 
 
-def dogs():
+def dog():
 
     connection = psycopg2.connect(connection_name)
     connection.autocommit = True
@@ -329,7 +326,7 @@ def dogs():
             # print(height)
             print(temperament)
             crs.execute("""
-            INSERT INTO dogs(id, name, life_span, weight, height, temperament, breed_group, bred_for)
+            INSERT INTO dog(id, name, life_span, weight, height, temperament, breed_group, bred_for)
             VALUES (%s,%s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT DO NOTHING
             """, (id, name, life_span, weight, height, temperament, breed_group, bred_for))
@@ -435,13 +432,13 @@ def health_assessment_prior_to_exposure():
         try:
             health_assessment_prior_to_exposure = record[1].get("health_assessment_prior_to_exposure")
             condition = health_assessment_prior_to_exposure.get("condition")
-            assessed_by = health_assessment_prior_to_exposure.get("assessed_by")
-            print(assessed_by)
+            # assessed_by = health_assessment_prior_to_exposure.get("assessed_by")
+            # print(assessed_by)
             crs.execute(f"""
-            INSERT INTO health_assessment_prior_to_exposure(unique_aer_id_number, condition, assessed_by)
-            VALUES (%s, %s, %s)
+            INSERT INTO health_assessment_prior_to_exposure(unique_aer_id_number, condition_of_animal)
+            VALUES (%s, %s)
             ON CONFLICT DO NOTHING
-            """, (record[0], condition, assessed_by))
+            """, (record[0], condition))
         except Exception as E:
             print("Error: {}".format(E))
 
@@ -474,17 +471,38 @@ def duration():
         except Exception as E:
             print("Error: {}".format(E))
 
+def temperament():
+    connection = psycopg2.connect(connection_name)
+    connection.autocommit = True
+
+    crs = connection.cursor()
+
+    crs.execute("SELECT * FROM raw_dog LIMIT 1000")
+
+    crs.execute(f"""
+    INSERT INTO temperament (id, char1, char2, char3, char4, char5, char6)
+    SELECT id
+            ,split_part(temperament, ',', 1) AS col1
+            ,split_part(temperament, ',', 2) AS col2
+            ,split_part(temperament, ',', 3) AS col3
+            ,split_part(temperament, ',', 4) AS col4
+            ,split_part(temperament, ',', 5) AS col5
+            ,split_part(temperament, ',', 6) AS col6
+    FROM dog;
+    """)
+
 
 if __name__ == "__main__":
-    # health_assessment_prior_to_exposure()
+    table_creation()
+    health_assessment_prior_to_exposure()
     duration()
-    # results()
-    # animals()
-    # dogs()
-    # age()
-    # weight()
-    # drugs()
-    # active_ingredients()
-    # reactions()
-    # dose()
-    # dogs()
+    results()
+    animals()
+    dog()
+    age()
+    weight()
+    drugs()
+    active_ingredients()
+    reactions()
+    temperament()
+
