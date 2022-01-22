@@ -32,7 +32,6 @@ UPDATE drugs SET used_according_to_label = 'true' WHERE used_according_to_label 
 UPDATE drugs SET used_according_to_label = 'Unkown' WHERE used_according_to_label IS NULL;
 UPDATE drugs SET previous_exposure_to_drug = 'Unkown' WHERE previous_exposure_to_drug IS NULL;
 UPDATE drugs SET dosage_form = 'Unkown' WHERE dosage_form IS NULL;
-ALTER TABLE drugs DROP COLUMN atc_vet_code;
 """)
 
 
@@ -43,6 +42,7 @@ UPDATE reactions SET veddra_term_code = 'Unknown' WHERE veddra_term_code !=num;
 UPDATE reactions SET veddra_term_name = 'Unknown' WHERE veddra_term_name = '';
 """)
 
+
 #weight
 
 weight_commands = ("""
@@ -50,6 +50,7 @@ DELETE FROM weight WHERE min IS NULL;
 ALTER TABLE weight DROP COLUMN qualifier;
 ALTER TABLE weight DROP COLUMN unit;
 """)
+
 
 #duration
 duration_commands = ("""
@@ -62,6 +63,7 @@ DELETE FROM duration WHERE unit = '';
 ALTER TABLE duration DROP COLUMN unit;
 """)
 
+
 #age
 age_commands = ("""
 SELECT EXISTS (SELECT 1 
@@ -71,6 +73,7 @@ DELETE FROM age WHERE unit !='Year';
 DELETE FROM age WHERE unit IS NULL;
 ALTER TABLE age DROP COLUMN unit;
 """)
+
 
 health_assessment_prior_to_exposure_commands = ("""
 UPDATE health_assessment_prior_to_exposure SET condition_of_animal = 'Unknown' WHERE condition_of_animal='';
@@ -88,9 +91,7 @@ UPDATE results SET original_receive_date = 'Unkown' WHERE original_receive_date 
 """)
 
 
-
-commands_list = [dog_commands, animals_commands, drugs_commands, reaction_commands, weight_commands, 
-                 duration_commands, age_commands,health_assessment_prior_to_exposure_commands, results_commands]
+commands_list = [drugs_commands]
 
 
 def cleaning():
@@ -108,8 +109,6 @@ def cleaning():
         crs.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-
-
 
 
 if __name__ == '__main__':
