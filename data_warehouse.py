@@ -3,9 +3,6 @@ import psycopg2
 connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
 
 
-
-
-
 dim_weight = ("""
 CREATE TABLE dim_weight
 (
@@ -31,7 +28,7 @@ unique_aer_id_number varchar(100) primary key,
 species varchar(100),
 gender varchar(100),
 breed varchar(2000),
-reproductive_system varchar(100),
+reproductive_status varchar(100),
 weight_ID int,
 age_ID int,
 FOREIGN KEY (weight_ID) REFERENCES dim_weight(weight_ID),
@@ -54,22 +51,6 @@ bred_for varchar(500)
 """)
 
 
-dim_temperament = ("""
-create table dim_temperament
-(
-temperament_id serial primary key,
-dog_id int,
-char1 varchar(100),
-char2 varchar(100),
-char3 varchar(100),
-char4 varchar(100),
-char5 varchar(100),
-char6 varchar(100),
-FOREIGN KEY (dog_id) REFERENCES dim_dog(dog_id)
-);
-""")
-
-
 dim_duration = ("""
 create table dim_duration
 (
@@ -84,8 +65,8 @@ create table dim_incident_ai
 (
 id serial primary key,
 ai_id int,
-numenator numeric(10,2),
-numenator_unit numeric(10,2),
+numerator numeric(10,2),
+numerator_unit varchar(100),
 denominator numeric(10,2),
 denominator_unit varchar(100)
 );
@@ -101,8 +82,8 @@ previous_exposure_to_drug varchar(100),
 dosage_form varchar(100),
 atc_vet_code varchar(100),
 incident_ai_ID int,
-FOREIGN KEY (incident_ai_ID) REFERENCES dim_incident_ai(ID)
-);
+FOREIGN KEY (incident_ai_ID) REFERENCES dim_incident_ai(id)
+)
 """)
 
 
@@ -124,6 +105,21 @@ health_assessment_id serial primary key,
 condition_of_animal varchar(100)
 );
 
+""")
+
+dim_temperament = ("""
+create table dim_temperament
+(
+temperament_id serial primary key,
+dog_id int,
+char1 varchar(100),
+char2 varchar(100),
+char3 varchar(100),
+char4 varchar(100),
+char5 varchar(100),
+char6 varchar(100),
+FOREIGN KEY (dog_id) REFERENCES dim_dog(dog_id)
+);
 """)
 
 
@@ -148,13 +144,14 @@ FOREIGN KEY (duration_id) REFERENCES dim_duration(duration_id)
 """)
 
 
+
 table_list = [dim_weight, dim_age, dim_animals, dim_dog,
-                 dim_temperament, dim_duration, dim_incident_ai,
+                 dim_duration, dim_incident_ai,
                  dim_drugs, dim_reactions, dim_health_assessment_prior_to_exposure,
-                 fact_results]
+                 dim_temperament, fact_results]
 
 
-def data_mart():
+def data_warehouse():
     try:
         connection = psycopg2.connect(connection_name)
         connection.autocommit = True
@@ -162,17 +159,12 @@ def data_mart():
 
         for command in table_list:
             crs.execute(command)
-            # close communication with the PostgreSQL database server
-            # crs.close()
-            # commit the changes
             connection.commit()
         crs.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-        # connection = psycopg2.connect(connection_name)
-        # connection.autocommit = True
-        # crs = connection.cursor()
+
 
 
 if __name__ == '__main__':
-    data_mart()
+    data_warehouse()
