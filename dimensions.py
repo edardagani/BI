@@ -64,7 +64,7 @@ load_incident_ai = ("""
 
 load_drugs = ("""
     insert into dim_drugs(used_according_to_label,previous_exposure_to_drug,dosage_form,atc_vet_code,incident_ai_ID)
-	select distinct d.used_according_to_label,d.previous_exposure_to_drug,d.dosage_form,d.atc_vet_code,di.ai_id
+	select distinct d.used_according_to_label,d.previous_exposure_to_drug,d.dosage_form,d.atc_vet_code,di.id
 	from drugs d
 	left join incident_ai i
 	on d.unique_aer_id_number=i.unique_aer_id_number
