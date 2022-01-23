@@ -63,8 +63,8 @@ load_incident_ai = ("""
 """)
 
 load_drugs = ("""
-    insert into dim_drugs(used_according_to_label,previous_exposure_to_drug,dosage_form,atc_vet_code,ai_id)
-	select distinct d.used_according_to_label,d.previous_exposure_to_drug,d.dosage_form,d.atc_vet_code,di.id
+    insert into dim_drugs(used_according_to_label,previous_exposure_to_drug,dosage_form,atc_vet_code,incident_ai_ID)
+	select distinct d.used_according_to_label,d.previous_exposure_to_drug,d.dosage_form,d.atc_vet_code,di.ai_id
 	from drugs d
 	left join incident_ai i
 	on d.unique_aer_id_number=i.unique_aer_id_number
@@ -139,7 +139,8 @@ commit;
 """)
 
 
-command_list = [ load_fact_result]
+command_list = [load_weight, load_age, load_animals, load_dog, load_duration, load_incident_ai, load_drugs,
+                load_reactions, load_health_assessment_prior_to_exposure, load_temperament,load_fact_result]
 
 
 def execute_queries():
