@@ -1,16 +1,8 @@
 # Business Intelligence System for a Veterinary Clinic
 
-1) API aggregation once every quarter
+This BI System is created to assist the veterinarians employed in a veterinart clinic, in the decising-making process of what drugs / prescriptions should be avoided for the animals they are looking after.
 
-2) Insertion of data to the staging area
-
-3) Commence ETL pipeline procedures
-
-4) Connection of normalized data with front end (GUI?)
-
-5) Data visualization 
-
-6) Data requests by the veterinarians to make educated decisions
+In order to run it in your machine the following steps must be followed
 
 ## PostGreSQL Setup Steps
 
@@ -70,7 +62,10 @@ Create password for database Superuser.
 ![PGInstaller-GUI-installer7](https://user-images.githubusercontent.com/24418024/150790802-9d3507c9-3db7-487f-a98d-a05a3b9f0844.jpg)
 
 
-
 ###### Step 9:
 
 Click next to begin PostgreSQL installation.
+
+
+
+
