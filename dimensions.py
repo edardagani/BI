@@ -143,7 +143,7 @@ command_list = [load_weight, load_age, load_animals, load_dog, load_duration, lo
                 load_reactions, load_health_assessment_prior_to_exposure, load_temperament,load_fact_result]
 
 
-def execute_queries():
+def create_dimensions():
     try:
         connection = psycopg2.connect(connection_name)
         connection.autocommit = True
@@ -163,4 +163,4 @@ def execute_queries():
         # crs = connection.cursor()
 
 
-execute_queries()
+create_dimensions()
