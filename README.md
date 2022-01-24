@@ -16,15 +16,15 @@ Business Intelligence System that does :
 
 First of all you have to install PostGreSQL using postgres installer : 
 
-Step 1:
+###### Step 1:
 
 Download Postgres Installer [here](https://www.postgresql.org/download/). Postgres Installer is available for PostgreSQL 9.5, 9.6, 10, 11, and 12(beta).
 
-Step 2:
+###### Step 2:
 
 Click on the executable file to run the installer.
 
-Step 3:
+###### Step 3:
 
 Select your preferred language.
 
@@ -32,7 +32,7 @@ Select your preferred language.
 ![PGInstaller-GUI-installer-13](https://user-images.githubusercontent.com/24418024/150790398-3b5b267f-ce0b-420d-a165-742d75d2a8d0.jpg)
 
 
-Step 4:
+###### Step 4:
 
 Specify directory where you want to install PostgreSQL.
 
@@ -40,7 +40,7 @@ Specify directory where you want to install PostgreSQL.
 ![PGInstaller-GUI-installer3](https://user-images.githubusercontent.com/24418024/150790429-060a5885-3881-49ee-a6bb-95ec33701c47.jpg)
 
 
-Step 5:
+###### Step 5:
 
 Specify PostgreSQL server port. You can leave this as default if you’re unsure what to enter.
 
@@ -48,14 +48,14 @@ Specify PostgreSQL server port. You can leave this as default if you’re unsure
 ![PGInstaller-GUI-installer](https://user-images.githubusercontent.com/24418024/150790451-16398af2-6750-4fbc-a55c-bdb39ab7a52b.jpg)
 
 
-Step 6:
+###### Step 6:
 
 Specify data directory to initialize PostgreSQL database.
 
 ![PGInstaller-GUI-installer5](https://user-images.githubusercontent.com/24418024/150790757-c437ef1b-1e98-4255-a7d3-8143bf88f9e0.jpg)
 
 
-Step 7:
+###### Step 7:
 
 Create a PostgreSQL user password.
 
@@ -63,7 +63,7 @@ Create a PostgreSQL user password.
 
 
 
-Step 8:
+###### Step 8:
 
 Create password for database Superuser.
 
@@ -71,6 +71,6 @@ Create password for database Superuser.
 
 
 
-Step 9:
+###### Step 9:
 
 Click next to begin PostgreSQL installation.
