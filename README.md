@@ -100,4 +100,19 @@ Unless you used banana_2 as a password you will want to change that, the rest ar
 
 ###### Step 4
 
+On the top right of your Pycharm IDE choose PostgreSQL as data source
 
+![Screenshot_34](https://user-images.githubusercontent.com/24418024/150837452-7840ba04-d941-406e-9db6-32c04d933f5a.png)
+
+And enter your credentials in order to connect to the database.
+
+![Screenshot_35](https://user-images.githubusercontent.com/24418024/150837787-84a62281-ab6b-4900-921b-24b174982eb7.png)
+
+
+###### Step 5
+
+Run the ```main.py``` file in order to begin the process and create the Fact Table and the Dimensions!
+
+###### Step 6 (Optional)
+
+If for some reason you want to run
