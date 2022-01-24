@@ -3,8 +3,7 @@ import requests
 import psycopg2
 import json
 import pandas as pd
-
-connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
+from init import *
 
 
 def profiling(query, export_file_name):
@@ -22,10 +21,7 @@ def profiling(query, export_file_name):
         print("Error : {}".format(e))
 
 
-
-
-if __name__ == '__main__':
-    # animals_prof()
+def profile_tables():
     profiling("SELECT * FROM dogs LIMIT 1000000", "dogs.html")
     profiling("SELECT * FROM animals LIMIT 1000000", "animals.html")
     profiling("SELECT * FROM results LIMIT 1000000", "results.html")
@@ -37,3 +33,6 @@ if __name__ == '__main__':
     profiling("SELECT * FROM active_ingredients LIMIT 1000000", "active_ingredients.html")
     profiling("SELECT * FROM incident_ai LIMIT 1000000", "incident_ai.html")
     profiling("SELECT * FROM health_assessment_prior_to_exposure LIMIT 1000000", "health_assessment_prior_to_exposure.html")
+
+
+# profile_tables()
