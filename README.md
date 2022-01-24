@@ -64,8 +64,14 @@ Create password for database Superuser.
 
 ###### Step 9:
 
-Click next to begin PostgreSQL installation.
+Click next to begin PostgreSQL installation
 
 
+###### Step 10:
 
+Press Finish
+
+![PGInstaller-GUI-installer11](https://user-images.githubusercontent.com/24418024/150818960-add32e85-aa7d-4b2b-8548-d140b437b4ca.jpg)
+
+The readme file contains installation paths, service names and database credentials.
 
