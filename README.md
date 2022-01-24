@@ -10,7 +10,7 @@ First of all you have to install PostGreSQL using postgres installer
 
 ###### Step 1:
 
-Download Postgres Installer [here](https://www.postgresql.org/download/). Postgres Installer is available for PostgreSQL 9.5, 9.6, 10, 11, and 12(beta).
+Download Postgres Installer [here](https://www.postgresql.org/download/)
 
 ###### Step 2:
 
