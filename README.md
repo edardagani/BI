@@ -6,7 +6,7 @@ In order to run it in your machine the following steps must be followed
 
 ## PostGreSQL Setup Steps
 
-First of all you have to install PostGreSQL using postgres installer : 
+First of all you have to install PostGreSQL using postgres installer 
 
 ###### Step 1:
 
