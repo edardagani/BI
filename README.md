@@ -115,4 +115,8 @@ Run the ```main.py``` file in order to begin the process and create the Fact Tab
 
 ###### Step 6 (Optional)
 
-If for some reason you want to run
+If for some reason you want to run a process by itself, you can do it in their perspective files.
+eg. If you want to run the etl process, you have to run the ```etl.py``` file.
+
+
+# THE END
