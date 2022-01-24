@@ -75,3 +75,29 @@ Press Finish
 
 The readme file contains installation paths, service names and database credentials.
 
+## IDE Setup / Project Import Steps
+
+###### Step 1
+
+Download the project and import it via your (ideally) Pycharm IDE, or clone it!
+
+
+###### Step 2
+
+Install the following libraries using pip, with the following commands:
+
+```
+pip install psycopg2
+pip install pandas
+pip numpy
+```
+
+###### Step 3
+
+Enter your DB's credentials in the ```init.py``` file .
+Unless you used banana_2 as a password you will want to change that, the rest are the default values.
+
+
+###### Step 4
+
+
