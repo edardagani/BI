@@ -3,7 +3,7 @@ import json
 import requests
 from psycopg2.extras import Json
 
-connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
+connection_name = "postgres://postgres:e26519982@localhost:5432/postgres"
 
 
 raw_table = ("""
@@ -45,7 +45,7 @@ def table_creation():
 
 
 def etl():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect("postgres://postgres:e26519982@localhost:5432/postgres")
     connection.autocommit = True
     crs = connection.cursor()
 
@@ -70,7 +70,7 @@ def fetch_data():
 
 
 def etl_dog_api():
-    connection = psycopg2.connect("postgres://postgres:banana_2@localhost:5432/postgres")
+    connection = psycopg2.connect("postgres://postgres:e26519982@localhost:5432/postgres")
     connection.autocommit = True
     crs = connection.cursor()
 
