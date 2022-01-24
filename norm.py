@@ -2,8 +2,9 @@ import psycopg2
 import requests
 import psycopg2
 import json
+from init import *
 
-connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
+
 
 active_ingredients_table = ("""
 CREATE TABLE active_ingredients
@@ -496,18 +497,19 @@ def temperament():
     """)
 
 
-if __name__ == "__main__":
-    # table_creation()
-    # health_assessment_prior_to_exposure()
-    # duration()
-    # results()
-    # animals()
-    # dog()
-    # age()
-    # weight()
-    # drugs()
-    # active_ingredients()
-    # reactions()
-    # temperament()
+def normalize_tables():
+    table_creation()
+    health_assessment_prior_to_exposure()
+    duration()
+    results()
+    animals()
+    dog()
+    age()
+    weight()
+    drugs()
+    active_ingredients()
+    reactions()
+    temperament()
     incident_ai()
 
+#normalize_tables()
