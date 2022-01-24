@@ -1,6 +1,5 @@
 import psycopg2
-
-connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
+from init import *
 
 
 dim_weight = ("""
@@ -166,5 +165,5 @@ def data_warehouse():
 
 
 
-if __name__ == '__main__':
-    data_warehouse()
+
+# data_warehouse()
