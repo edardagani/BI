@@ -39,6 +39,7 @@ def table_creation():
             # crs.close()
             # commit the changes
             connection.commit()
+        crs.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
