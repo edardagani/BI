@@ -12,7 +12,7 @@ Business Intelligence System that does :
 
 6) Data requests by the veterinarians to make educated decisions
 
-######**PostGreSQL Setup Steps**
+######PostGreSQL Setup Steps
 
 First of all you have to install PostGreSQL using postgres installer : 
 
