@@ -1,4 +1,4 @@
-Business Intelligence System that does :
+# Business Intelligence System for a Veterinary Clinic
 
 1) API aggregation once every quarter
 
