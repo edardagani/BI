@@ -91,9 +91,13 @@ def fetch_data_dog_api():
     return [response]
 
 
-if __name__ == '__main__':
-        table_creation()
-        etl_dog_api()
-        etl()
+def etl_process():
+    table_creation()
+    etl_dog_api()
+    etl()
+
+
+
+#etl_process()
 
 
