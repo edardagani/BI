@@ -1,7 +1,7 @@
 import psycopg2
+from init import *
 
 
-connection_name = "postgres://postgres:banana_2@localhost:5432/postgres"
 
 #dogs
 
@@ -38,7 +38,7 @@ UPDATE drugs SET dosage_form = 'Unkown' WHERE dosage_form IS NULL;
 #reactions
 reaction_commands = ("""
 UPDATE reactions SET veddra_version = 'Unknown' WHERE veddra_version = '';
-UPDATE reactions SET veddra_term_code = 'Unknown' WHERE veddra_term_code !=num;
+UPDATE reactions SET veddra_term_code = 'Unknown' WHERE veddra_term_code !=numeric;
 UPDATE reactions SET veddra_term_name = 'Unknown' WHERE veddra_term_name = '';
 """)
 
@@ -46,6 +46,7 @@ UPDATE reactions SET veddra_term_name = 'Unknown' WHERE veddra_term_name = '';
 #weight
 
 weight_commands = ("""
+DELETE FROM weight WHERE min = '';
 DELETE FROM weight WHERE min IS NULL;
 ALTER TABLE weight DROP COLUMN qualifier;
 ALTER TABLE weight DROP COLUMN unit;
@@ -91,10 +92,11 @@ UPDATE results SET original_receive_date = 'Unkown' WHERE original_receive_date 
 """)
 
 
-commands_list = [drugs_commands]
+commands_list = [reaction_commands, weight_commands,duration_commands,
+                 age_commands, health_assessment_prior_to_exposure_commands, results_commands]
 
 
-def cleaning():
+def clean_tables():
     try:
         connection = psycopg2.connect(connection_name)
         connection.autocommit = True
@@ -111,5 +113,4 @@ def cleaning():
         print(error)
 
 
-if __name__ == '__main__':
-    cleaning()
+#clean_tables
